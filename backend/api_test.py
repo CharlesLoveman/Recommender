@@ -1,3 +1,3 @@
 import requests
 
-requests.get("https://api.myanimelist.net/v2")
+print(requests.get("https://api.myanimelist.net/v2").text)
