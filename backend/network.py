@@ -54,6 +54,11 @@ def build_adjacency_matrix(data):
     return adjacency_matrix
 
 
+def build_mapping(data):
+    """Build mapping from MAL ids to network indices."""
+    return {id_: index for index, id_ in enumerate(data["id"])}
+
+
 def make_symmetric(adjacency_matrix):
     """Make the adjacency matrix symmetric."""
     return adjacency_matrix + adjacency_matrix.T
