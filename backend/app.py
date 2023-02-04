@@ -1,7 +1,10 @@
 from flask import Flask
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
-@app.route("/")
+@app.get("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    print("hello")
+    return {"text": "Hello, World!"}
