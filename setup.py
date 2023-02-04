@@ -10,5 +10,6 @@ setup(
         'pandas',
         'matplotlib',
         'Flask',
+        'networkx',
     ]
 )
