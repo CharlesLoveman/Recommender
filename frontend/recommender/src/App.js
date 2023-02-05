@@ -17,8 +17,8 @@ function App() {
     const header = {
       'Content-Type': "application/json"
     }
-    axios.get("http://127.0.0.1:5000/", {params}, header).then(function (response) {
-      setData(response.data["text"]) 
+    axios.get("http://127.0.0.1:5000/", { params }, header).then(function (response) {
+      setData(response.data)
     })
   }
 
@@ -28,7 +28,7 @@ function App() {
 
   const addMember = (e) => {
     e.preventDefault()
-    setMembers([...members, username]) 
+    setMembers([...members, username])
     setUsername("")
   }
 
@@ -38,24 +38,27 @@ function App() {
 
   return (
     <div className="App">
-      {(data) ? 
+      {(data) ?
         <div>
-          <p>{data}</p>
-          <img src="https://myanimelist.net/images/anime/6/73245.jpg"/>
+          <h1>Our recommendation is:</h1>
+          <p>{data['title']}!</p>
+          <p>It is rated {data['rating']}, if you're curious</p>
+          <a href={"https://myanimelist.net/anime/" + data['id'] + "/" + data['title']}><img src={data['image_url']} /></a>
         </div>
         :
-        <Button onClick={() => get()}>Get</Button>
+        <div>
+          <Button onClick={() => get()}>Get</Button>
+          <form onSubmit={(e) => addMember(e)}>
+            <label>
+              Username:
+              <input type="text" value={username} onChange={(e) => usernameOnChange(e)} />
+            </label>
+          </form>
+          {members.map(m => Username(m, removeMember))}
+        </div>
       }
-      <div>
-        <form onSubmit={(e) => addMember(e)}>
-          <label>
-            Username:
-            <input type="text" value={username} onChange={(e) => usernameOnChange(e)}/>
-          </label>
-        </form>
-        {members.map(m => Username(m, removeMember))}
-      </div>
-    </div>
+
+    </div >
   );
 }
 
