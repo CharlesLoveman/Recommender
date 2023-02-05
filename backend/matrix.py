@@ -105,8 +105,11 @@ class InvMap:
 
     def __call__(self, id_):
         if isinstance(id_, np.ndarray):
-            if len(id_):
-                return self.mapping(id_)
+            internal = np.intersect1d(
+                id_, np.fromiter(self.dictionary.keys(), np.float64)
+            )
+            if len(internal):
+                return self.mapping(internal)
             else:
                 return np.array([], np.int64)
 
