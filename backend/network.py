@@ -4,17 +4,6 @@ import numpy as np
 from .matrix import Similarity, Map, InvMap
 
 
-def configure(data):
-    """Configure the network."""
-    # Build maps
-    Map({i: anime for i, anime in enumerate(data["id"])})
-    InvMap({anime: i for i, anime in enumerate(data["id"])})
-
-    # Build network
-    network = Network.from_data(data)
-    Similarity(network.cosine_similarity())
-
-
 class Network:
     """Network class for the recommender system."""
 
@@ -52,6 +41,24 @@ class Network:
             adjacency_matrix = make_symmetric(adjacency_matrix)
 
         return cls(adjacency_matrix)
+
+    @classmethod
+    def configure(cls, data, symmetric=True):
+        """Configure the network."""
+        # Build maps
+        Map({i: anime for i, anime in enumerate(data["id"])})
+        InvMap({anime: i for i, anime in enumerate(data["id"])})
+
+        # Build adjacency matrix
+        adjacency_matrix = build_adjacency_matrix(data)
+        if symmetric:
+            adjacency_matrix = make_symmetric(adjacency_matrix)
+
+        # Build network
+        network = cls(adjacency_matrix)
+        Similarity(network.cosine_similarity())
+
+        return network
 
 
 def build_adjacency_matrix(data):
