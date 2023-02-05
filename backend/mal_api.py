@@ -16,6 +16,7 @@ class MAL_API(API):
         'Content-Type': "application/json"
     }
 
+    @classmethod
     def get_user_opinion(self, list_status):
         if list_status['status'] in ("completed", "watching", "on_hold", "dropped"):
             return list_status['score']
@@ -23,22 +24,55 @@ class MAL_API(API):
     @classmethod
     def extract_user_entries(cls, user):
         url = f"https://api.myanimelist.net/v2/users/{user}/animelist"
+
+        end_reached = False
+        total_list = []
+        i = 0
+
+        while(not end_reached):
+            data = {
+                "status": "completed",
+                "fields": "list_status",
+                "limit": 100,
+                "offset": 100 * i
+            }
+            response = requests.get(url=url, params=data, headers=cls.headers)
+            animes = response.json()
+            
+            if 'error' in animes:
+                return None
+            else:
+                unfiltered_list = [[node['node']['id'], cls.get_user_opinion(node['list_status'])] for node in animes['data']]
+                unfiltered_list = list(filter(lambda a: (a[1] is not None and a[1] != 0), unfiltered_list))
+                total_list.extend(unfiltered_list)
+
+            print(len(total_list))
+
+            if "next" in animes['paging']:
+                i += 1
+            else:
+                end_reached = True
+
+        return np.array(total_list)
+
+    @classmethod    
+    def get_anime_display_details(cls, id):
+        url = f"https://api.myanimelist.net/v2/anime/{id}"
+
         data = {
-            "status": "completed",
-            "fields": "list_status",
-            "limit": 100
+            'fields': "title,mean"
         }
-        response = requests.get(url=url, params=data, headers=cls.headers)
-        animes = response.json()
         
-        if 'error' in animes:
-            return None
-        else:
-            unfiltered_list = [[node['node']['id'], cls.get_user_opinion(node['list_status'])] for node in animes['data']]
-            unfiltered_list = list(filter(lambda a, b: b is not None and b != 0, unfiltered_list))
+        response = requests.get(url=url, params=data, headers=cls.headers)
+        anime_details = response.json()
 
-            return np.array(unfiltered_list)
+        title = anime_details['title']
+        rating = anime_details['mean']
+        image_url = anime_details['main_picture']['large']
 
+        return title, rating, image_url
+
+    @classmethod
     def get_anime_details(cls, id):
         url = f"https://api.myanimelist.net/v2/anime/{id}"
 
@@ -91,3 +125,6 @@ class MAL_API(API):
                 df.loc[len(df)] = details_list
 
             pickle.dump(df, open("df.p", "wb"))
+
+
+print(MAL_API.get_anime_display_details(12189))
