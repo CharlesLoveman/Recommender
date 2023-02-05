@@ -70,10 +70,7 @@ class Map:
             else:
                 return np.array([], np.int64)
 
-        if isinstance(index, np.int64):
-            return self.dictionary[index]
-
-        raise ValueError(f"Unexpected type {type(index)}")
+        return self.dictionary[index]
 
 
 class InvMap:
