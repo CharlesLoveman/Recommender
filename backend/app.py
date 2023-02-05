@@ -15,16 +15,15 @@ def hello_world():
 
     #users_info = [MAL_API.extract_user_entries(user) for user in members]
     #recommendation_id = recommend(users_info)
-    recommendation_id = 12189
+    recommendations = [12189, 49387, 50330, 50197, 41514]
 
-    title, rating, image_url = MAL_API.get_anime_display_details(
-        recommendation_id
-    )
-
-    print(members)
-    return {
-        "id": recommendation_id,
-        "title": title,
-        "rating": rating,
-        "image_url": image_url,
-    }
+    results = []
+    for id in recommendations:
+        title, rating, image_url = MAL_API.get_anime_display_details(id)
+        results.append({
+            "id": id,
+            "title": title,
+            "rating": rating,
+            "image_url": image_url,
+        })
+    return results

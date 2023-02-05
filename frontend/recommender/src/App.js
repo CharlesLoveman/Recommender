@@ -4,6 +4,8 @@ import axios from 'axios';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import Username from './Username.js';
+import Show from './Show.js';
+
 
 function App() {
   const [data, setData] = useState(null)
@@ -19,6 +21,7 @@ function App() {
     }
     axios.get("http://127.0.0.1:5000/", { params }, header).then(function (response) {
       setData(response.data)
+      console.log(response.data)
     })
   }
 
@@ -40,10 +43,7 @@ function App() {
     <div className="App">
       {(data) ?
         <div>
-          <h1>Our recommendation is:</h1>
-          <p>{data['title']}!</p>
-          <p>It is rated {data['rating']}, if you're curious</p>
-          <a href={"https://myanimelist.net/anime/" + data['id'] + "/" + data['title']}><img src={data['image_url']} /></a>
+          {data.map(x => Show(x['title'], x['rating'], x["https://myanimelist.net/anime/" + x['id'] + "/" + x['title']], x['image_url']))}
         </div>
         :
         <div>
