@@ -11,7 +11,13 @@ function App() {
   const [username, setUsername] = useState("")
 
   function get() {
-    axios.get("http://127.0.0.1:5000/").then(function (response) {
+    const params = {
+      'members': members
+    }
+    const header = {
+      'Content-Type': "application/json"
+    }
+    axios.get("http://127.0.0.1:5000/", {params}, header).then(function (response) {
       setData(response.data["text"]) 
     })
   }

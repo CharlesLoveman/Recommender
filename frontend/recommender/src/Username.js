@@ -13,7 +13,7 @@ function Username(text, removeMember) {
     }
 
     return (
-        <Card sx={{ minWidth: 275, padding: "1rem", 'margin-left': "20rem", 'margin-right': "20rem"}} key={text} onClick={() => removeMember(text)}>
+        <Card sx={{ minWidth: 275, padding: "1rem", marginLeft: "20rem", marginRight: "20rem"}} key={text} onClick={() => removeMember(text)}>
             <CardContent>
                 <Typography ref={ref} sx={{ fontSize: 50, padding: "0.5rem", cursor: "grab"}} color="text.secondary" gutterBottom onMouseLeave={() => onMouseExit()} onMouseOver={() => onMouseOver()}>
                     {text}
