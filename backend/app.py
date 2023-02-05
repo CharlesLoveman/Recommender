@@ -20,5 +20,5 @@ def hello_world():
     title, rating, image_url = MAL_API.get_anime_display_details(recommendation_id)
 
     print(members)
-    return {"text": f"Hello, {members}!"}
+    return {"id": recommendation_id, "title": title, "rating": rating, "image_url": image_url}
 
