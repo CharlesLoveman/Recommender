@@ -2,6 +2,7 @@
 
 import pickle
 import numpy as np
+from scipy.sparse import csr_matrix
 
 
 class Similarity:
@@ -9,23 +10,24 @@ class Similarity:
 
     _instance = None
 
-    def __new__(cls, matrix=None):
+    def __new__(cls, matrix=None, tol=1e-4):
         if cls._instance is None:
             print("Loading similarity matrix...")
             cls._instance = super(Similarity, cls).__new__(cls)
-            cls._instance._load_matrix(matrix)
+            cls._instance._load_matrix(matrix, tol)
 
         return cls._instance
 
-    def _load_matrix(self, matrix):
+    def _load_matrix(self, matrix, tol):
         if matrix is None:
-            with open("../similarity_matrix.pkl", "rb") as f:
+            with open("similarity_matrix.pkl", "rb") as f:
                 self.matrix = pickle.load(f)
         else:
-            self.matrix = matrix
+            matrix[matrix < tol] = 0
+            self.matrix = csr_matrix(matrix)
 
     def _save_matrix(self):
-        with open("../similarity_matrix.pkl", "wb") as f:
+        with open("similarity_matrix.pkl", "wb") as f:
             pickle.dump(self.matrix, f)
 
     def __getitem__(self, index):
@@ -47,7 +49,7 @@ class Map:
 
     def _load_map(self, mapping):
         if mapping is None:
-            with open("../id_mapping.pkl", "rb") as f:
+            with open("id_mapping.pkl", "rb") as f:
                 self.dictionary = pickle.load(f)
         else:
             self.dictionary = mapping
@@ -58,7 +60,7 @@ class Map:
         self.mapping = np.vectorize(f)
 
     def _save_map(self):
-        with open("../id_mapping.pkl", "wb") as f:
+        with open("id_mapping.pkl", "wb") as f:
             pickle.dump(self.dictionary, f)
 
     def __call__(self, index):
@@ -68,10 +70,7 @@ class Map:
             else:
                 return np.array([], np.int64)
 
-        if isinstance(index, np.int64):
-            return self.dictionary[index]
-
-        raise ValueError(f"Unexpected type {type(index)}")
+        return self.dictionary[index]
 
 
 class InvMap:
@@ -89,7 +88,7 @@ class InvMap:
 
     def _load_map(self, mapping):
         if mapping is None:
-            with open("../inv_mapping.pkl", "rb") as f:
+            with open("inv_mapping.pkl", "rb") as f:
                 self.dictionary = pickle.load(f)
         else:
             self.dictionary = mapping
@@ -100,7 +99,7 @@ class InvMap:
         self.mapping = np.vectorize(f)
 
     def _save_map(self):
-        with open("../inv_mapping.pkl", "wb") as f:
+        with open("inv_mapping.pkl", "wb") as f:
             pickle.dump(self.dictionary, f)
 
     def __call__(self, id_):
