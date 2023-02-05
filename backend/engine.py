@@ -18,10 +18,7 @@ def compile_ratings(users):
 def build_score(ratings):
     """Build the score vector for a user."""
     return np.sum(
-        np.einsum(
-            "ij,i->j", Similarity()[InvMap()(ratings[:, 0]), :], ratings[:, 1]
-        ),
-        axis=0,
+        ratings[:, 1] @ Similarity()[InvMap()(ratings[:, 0]), :], axis=0
     )
 
 

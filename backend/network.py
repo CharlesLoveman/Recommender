@@ -1,6 +1,7 @@
 """Network module for the recommender system."""
 
 import numpy as np
+from scipy.sparse import csr_matrix
 from .matrix import Similarity, Map, InvMap
 
 
@@ -27,34 +28,28 @@ class Network:
 
     def cosine_similarity(self):
         """Return the cosine similarity matrix."""
-        print(self.adjacency_matrix.shape)
         shared_neighbours = self.adjacency_matrix @ self.adjacency_matrix
-        print("worked")
-        degree_matrix = np.einsum("i,j->ij", self.degrees, self.degrees)
-        print("also worked")
+        degree_matrix = self.degrees @ self.degrees.T
         similarity_matrix = shared_neighbours / np.sqrt(degree_matrix)
         return np.nan_to_num(similarity_matrix, nan=0)
 
+    @classmethod
+    def configure(cls, data, symmetric=True):
+        """Configure the network."""
+        # Build maps
+        Map({i: media for i, media in enumerate(data["id"])})
+        InvMap({media: i for i, media in enumerate(data["id"])})
 
-def configure(data, symmetric=True):
-    """Configure the network."""
-    # Build maps
-    Map({i: media for i, media in enumerate(data["id"])})
-    InvMap({media: i for i, media in enumerate(data["id"])})
+        # Build adjacency matrix
+        adjacency_matrix = csr_matrix(build_adjacency_matrix(data))
+        if symmetric:
+            adjacency_matrix = make_symmetric(adjacency_matrix)
 
-    # Build adjacency matrix
-    adjacency_matrix = build_adjacency_matrix(data)
-    if symmetric:
-        adjacency_matrix = make_symmetric(adjacency_matrix)
+        # Build network
+        network = cls(adjacency_matrix)
+        Similarity(network.cosine_similarity())
 
-    # Build network
-    print("halt")
-    network = Network(adjacency_matrix)
-    print("network built")
-    print(network.cosine_similarity())
-    Similarity(network.cosine_similarity())
-
-    return network
+        return network
 
 
 def build_adjacency_matrix(data):
@@ -64,7 +59,6 @@ def build_adjacency_matrix(data):
     adjacency_matrix = np.zeros((n, n))
 
     for node, neighbours in enumerate(adjacent_nodes):
-        print(node)
         adjacency_matrix[node, InvMap()(neighbours)] = 1
 
     return adjacency_matrix
