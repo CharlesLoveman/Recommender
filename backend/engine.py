@@ -17,7 +17,7 @@ def compile_ratings(users):
 
 def build_score(ratings):
     """Build the score vector for a user."""
-    return ratings[:, 1] @ Similarity()[InvMap()(ratings[:, 0]), :]
+    return Similarity()[InvMap()(ratings[:, 0]), :] @ ratings[:, 1]
 
 
 def normalise_ratings(ratings):

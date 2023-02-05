@@ -8,7 +8,7 @@ print("Loading data...")
 with open("data.pkl", "rb") as f:
     data = pickle.load(f)
 
-print("Building network...")
+print("Building network (This may take a while)...")
 Network.configure(data)
 
 print("Storing similarity matrix...")
