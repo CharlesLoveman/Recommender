@@ -1,6 +1,7 @@
 """Network module for the recommender system."""
 
 import numpy as np
+from .matrix import Similarity, Map, InvMap
 
 
 class Network:
@@ -41,6 +42,24 @@ class Network:
 
         return cls(adjacency_matrix)
 
+    @classmethod
+    def configure(cls, data, symmetric=True):
+        """Configure the network."""
+        # Build maps
+        Map({i: media for i, media in enumerate(data["id"])})
+        InvMap({media: i for i, media in enumerate(data["id"])})
+
+        # Build adjacency matrix
+        adjacency_matrix = build_adjacency_matrix(data)
+        if symmetric:
+            adjacency_matrix = make_symmetric(adjacency_matrix)
+
+        # Build network
+        network = cls(adjacency_matrix)
+        Similarity(network.cosine_similarity())
+
+        return network
+
 
 def build_adjacency_matrix(data):
     """Build adjacency matrix."""
@@ -48,8 +67,8 @@ def build_adjacency_matrix(data):
     n = len(adjacent_nodes)
     adjacency_matrix = np.zeros((n, n))
 
-    for node, neightbours in enumerate(adjacent_nodes):
-        adjacency_matrix[node, neightbours] = 1
+    for node, neighbours in enumerate(adjacent_nodes):
+        adjacency_matrix[node, InvMap()(neighbours)] = 1
 
     return adjacency_matrix
 
