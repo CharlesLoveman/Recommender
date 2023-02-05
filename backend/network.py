@@ -46,8 +46,8 @@ class Network:
     def configure(cls, data, symmetric=True):
         """Configure the network."""
         # Build maps
-        Map({i: anime for i, anime in enumerate(data["id"])})
-        InvMap({anime: i for i, anime in enumerate(data["id"])})
+        Map({i: media for i, media in enumerate(data["id"])})
+        InvMap({media: i for i, media in enumerate(data["id"])})
 
         # Build adjacency matrix
         adjacency_matrix = build_adjacency_matrix(data)

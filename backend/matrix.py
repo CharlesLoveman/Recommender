@@ -33,7 +33,7 @@ class Similarity:
 
 
 class Map:
-    """Class to store map from network indices to MAL ids."""
+    """Class to store map from network indices to media ids."""
 
     _instance = None
 
@@ -75,7 +75,7 @@ class Map:
 
 
 class InvMap:
-    """Class to store map from MAL ids to network indices."""
+    """Class to store map from media ids to network indices."""
 
     _instance = None
 
