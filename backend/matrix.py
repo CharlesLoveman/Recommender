@@ -93,6 +93,8 @@ class InvMap:
         else:
             self.dictionary = mapping
 
+        self.keys = np.fromiter(self.dictionary.keys(), np.float64)
+
         def f(id_):
             return self.dictionary[id_]
 
@@ -102,17 +104,17 @@ class InvMap:
         with open("inv_mapping.pkl", "wb") as f:
             pickle.dump(self.dictionary, f)
 
+    def slicer(self, id_):
+        """Return indices of id_ in self.keys."""
+        return np.intersect1d(
+            id_, self.keys, assume_unique=True, return_indices=True
+        )[1]
+
     def __call__(self, id_):
         if isinstance(id_, np.ndarray):
-            internal = np.intersect1d(
-                id_, np.fromiter(self.dictionary.keys(), np.float64)
-            )
-            if len(internal):
-                return self.mapping(internal)
+            if len(id_):
+                return self.mapping(id_)
             else:
                 return np.array([], np.int64)
 
-        if isinstance(id_, np.int64):
-            return self.dictionary[id_]
-
-        raise ValueError(f"Unexpected type {type(id_)}")
+        return self.dictionary[id_]

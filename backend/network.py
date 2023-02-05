@@ -59,7 +59,8 @@ def build_adjacency_matrix(data):
     adjacency_matrix = np.zeros((n, n))
 
     for node, neighbours in enumerate(adjacent_nodes):
-        adjacency_matrix[node, InvMap()(neighbours)] = 1
+        ii = InvMap().slicer(neighbours)
+        adjacency_matrix[node, InvMap()(neighbours[ii])] = 1
 
     return adjacency_matrix
 
