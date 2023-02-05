@@ -2,7 +2,6 @@
 
 import pickle
 import numpy as np
-from functools import singledispatch
 
 
 class Similarity:
@@ -63,8 +62,16 @@ class Map:
             pickle.dump(self.dictionary, f)
 
     def __call__(self, index):
-        if len(index):
-            return self.mapping(index)
+        if isinstance(index, np.ndarray):
+            if len(index):
+                return self.mapping(index)
+            else:
+                return np.array([], np.int64)
+
+        if isinstance(index, np.int64):
+            return self.dictionary[index]
+
+        raise ValueError(f"Unexpected type {type(index)}")
 
 
 class InvMap:
@@ -97,5 +104,13 @@ class InvMap:
             pickle.dump(self.dictionary, f)
 
     def __call__(self, id_):
-        if len(id_):
-            return self.mapping(id_)
+        if isinstance(id_, np.ndarray):
+            if len(id_):
+                return self.mapping(id_)
+            else:
+                return np.array([], np.int64)
+
+        if isinstance(id_, np.int64):
+            return self.dictionary[id_]
+
+        raise ValueError(f"Unexpected type {type(id_)}")
