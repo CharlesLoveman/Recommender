@@ -10,6 +10,6 @@ class API(ABC):
         return NotImplemented
    
     @abstractmethod
-    def extract_global_entries():
+    def pickle_global_entries():
         """Get a data frame of all the media entries, with headers 'id', 'title', 'rating' and 'recommends'. Also pickles the database."""
         return NotImplemented

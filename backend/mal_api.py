@@ -55,40 +55,39 @@ class MAL_API(API):
         return title, rating, recommendations
 
     @classmethod
-    def extract_global_entries(cls):
-        n = 20
-        anime_ids = []
+    def pickle_global_entries(cls):
+        if not os.path.exists("df.p"):
+            n = 20
+            anime_ids = []
 
-        for i in range(n):
-            print(f"{i}/{n}")
-            url = "https://api.myanimelist.net/v2/anime/ranking"
+            for i in range(n):
+                print(f"{i}/{n}")
+                url = "https://api.myanimelist.net/v2/anime/ranking"
 
-            data = {
-                'ranking_type': "all",
-                'limit': 500,
-                'offset': 500 * i,
-                'fields': "recommendations,score"
-            }
-            sleep(1)
-            response = requests.get(url=url, params=data, headers=cls.headers)
+                data = {
+                    'ranking_type': "all",
+                    'limit': 500,
+                    'offset': 500 * i,
+                    'fields': "recommendations,score"
+                }
+                sleep(1)
+                response = requests.get(url=url, params=data, headers=cls.headers)
 
-            animes = response.json()
-            for node in animes['data']:
-                anime_ids.append(node['node']['id'])
+                animes = response.json()
+                for node in animes['data']:
+                    anime_ids.append(node['node']['id'])
 
-        df = pd.DataFrame(columns=['id', 'name', 'rating', 'recommends'])
+            df = pd.DataFrame(columns=['id', 'name', 'rating', 'recommends'])
 
-        m = 0
-        print(f"Total: {len(anime_ids)}")
+            m = 0
+            print(f"Total: {len(anime_ids)}")
 
-        for id in anime_ids:
-            m += 1
-            print(m)
-            sleep(0.5)
-            title, rating, recommendations = cls.get_anime_details(id)
-            details_list = [id, title, rating, recommendations]
-            df.loc[len(df)] = details_list
+            for id in anime_ids:
+                m += 1
+                print(m)
+                sleep(0.5)
+                title, rating, recommendations = cls.get_anime_details(id)
+                details_list = [id, title, rating, recommendations]
+                df.loc[len(df)] = details_list
 
-        pickle.dump(df, open("df.p", "wb"))
-
-        return df
+            pickle.dump(df, open("df.p", "wb"))
