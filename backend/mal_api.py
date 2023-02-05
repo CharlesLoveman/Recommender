@@ -4,7 +4,7 @@ from time import sleep
 import numpy as np
 import pandas as pd
 import pickle
-from api import API
+from backend.api import API
 
 
 class MAL_API(API):
@@ -127,4 +127,4 @@ class MAL_API(API):
             pickle.dump(df, open("df.p", "wb"))
 
 
-print(MAL_API.get_anime_display_details(12189))
+#print(MAL_API.get_anime_display_details(12189))
