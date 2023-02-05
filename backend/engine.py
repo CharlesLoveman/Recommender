@@ -7,7 +7,7 @@ from .matrix import Similarity, Map, InvMap
 def recommend(users):
     """Recommend movies to users."""
     scores = build_score(compile_ratings(users))
-    return Map()(np.argpartition(scores, -4)[-4:])
+    return Map()(np.argpartition(scores, -5)[-5:])
 
 
 def compile_ratings(users):
