@@ -6,6 +6,7 @@ import { useState } from 'react';
 import Username from './Username.js';
 import Show from './Show.js';
 import { Input } from '@mui/material';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 
 function App() {
@@ -33,6 +34,10 @@ function App() {
     setUsername(e.target.value)
   }
 
+  const clearData = (e) => {
+    setData(null)
+  }
+
   const addMember = (e) => {
     e.preventDefault()
     if (username !== "") {
@@ -50,6 +55,7 @@ function App() {
     <div className="App">
       {(data) ?
         <div>
+          <Button onClick={() => clearData()}>  <ArrowBackIosNewIcon sx={{ fontSize: 100 }} /> </Button>
           {data.map(x => Show(x['title'], x['rating'], "https://myanimelist.net/anime/" + x['id'], x['image_url']))}
         </div>
         :
@@ -59,7 +65,7 @@ function App() {
             <label>
               <br></br>
 
-              <Input style={{ fontSize: 50, margin: "100px", padding: "100px" }} type="text" value={username} onChange={(e) => usernameOnChange(e)} />
+              <Input placeholder="Put your username here!" style={{ fontSize: 50, margin: "100px", padding: "100px" }} type="text" value={username} onChange={(e) => usernameOnChange(e)} />
               <Button onClick={(e) => addMember(e)} style={{ fontSize: 50, margin: "100px", padding: "100px" }}> + </Button>
             </label>
           </form>
