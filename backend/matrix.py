@@ -53,8 +53,6 @@ class Map:
                 self.dictionary = pickle.load(f)
         else:
             self.dictionary = mapping
-
-        self.keys = np.fromiter(self.dictionary.keys(), np.int64)
         
         def f(index):
             return self.dictionary[int(index)]
@@ -68,7 +66,7 @@ class Map:
     def __call__(self, index):
         if isinstance(index, np.ndarray):
             if len(index):
-                return self.mapping(np.intersect1d(index.astype(int), self.keys))
+                return self.mapping(index)
             else:
                 return np.array([], np.int64)
 
