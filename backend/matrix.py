@@ -49,8 +49,8 @@ class Map:
 
     def _load_map(self, mapping):
         if mapping is None:
-            with open("id_mapping.pkl", "rb") as f:
-                self.dictionary = pickle.load(f)
+            with open("id_mapping.pkl", "rb") as file:
+                self.dictionary = pickle.load(file)
         else:
             self.dictionary = mapping
         
@@ -88,8 +88,8 @@ class InvMap:
 
     def _load_map(self, mapping):
         if mapping is None:
-            with open("inv_mapping.pkl", "rb") as f:
-                self.dictionary = pickle.load(f)
+            with open("inv_mapping.pkl", "rb") as file:
+                self.dictionary = pickle.load(file)
         else:
             self.dictionary = mapping
 
