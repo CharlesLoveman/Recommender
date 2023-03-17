@@ -15,7 +15,6 @@ def hello_world():
     users_info = []
     for user in members:
         user_info = MAL_API.extract_user_entries(user)
-        print(user_info)
         if user_info is None:
             return {"error": "User profile is private."}
         if not len(user_info):
@@ -27,6 +26,7 @@ def hello_world():
         recommendations = recommend(users_info)
         for id in recommendations:
             title, rating, image_url = MAL_API.get_anime_display_details(id)
+            id = str(id)
             results.append({
                 "id": id,
                 "title": title,
