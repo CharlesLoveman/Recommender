@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { useState } from 'react';
 import Username from './Username.js';
 import Show from './Show.js';
+import { Input } from '@mui/material';
 
 
 function App() {
@@ -19,10 +20,13 @@ function App() {
     const header = {
       'Content-Type': "application/json"
     }
-    axios.get("http://127.0.0.1:5000/", { params }, header).then(function (response) {
-      setData(response.data)
-      console.log(response.data)
-    })
+    if (members.length > 0) {
+      axios.get("http://127.0.0.1:5000/", { params }, header).then(function (response) {
+        setData(response.data)
+        console.log(response.data)
+      })
+    }
+
   }
 
   const usernameOnChange = (e) => {
@@ -31,7 +35,10 @@ function App() {
 
   const addMember = (e) => {
     e.preventDefault()
-    setMembers([...members, username])
+    if (username !== "") {
+      setMembers([...members, username])
+    }
+
     setUsername("")
   }
 
@@ -47,15 +54,18 @@ function App() {
         </div>
         :
         <div>
-          <Button onClick={() => get()}>Get</Button>
+
           <form onSubmit={(e) => addMember(e)}>
             <label>
-              Username:
-              <input size="100" font-size="100px" type="text" value={username} onChange={(e) => usernameOnChange(e)} />
+              <br></br>
+
+              <Input style={{ fontSize: 50, margin: "100px", padding: "100px" }} type="text" value={username} onChange={(e) => usernameOnChange(e)} />
+              <Button onClick={(e) => addMember(e)} style={{ fontSize: 50, margin: "100px", padding: "100px" }}> + </Button>
             </label>
           </form>
           {members.map(m => Username(m, removeMember))}
-        </div>
+
+          <Button style={{ fontSize: 50, margin: "100px", padding: "100px" }} onClick={() => get()}>Give me a recommendation!</Button>        </div>
       }
 
     </div >
