@@ -51,7 +51,7 @@ function App() {
           <form onSubmit={(e) => addMember(e)}>
             <label>
               Username:
-              <input type="text" value={username} onChange={(e) => usernameOnChange(e)} />
+              <input size="100" font-size="100px" type="text" value={username} onChange={(e) => usernameOnChange(e)} />
             </label>
           </form>
           {members.map(m => Username(m, removeMember))}
