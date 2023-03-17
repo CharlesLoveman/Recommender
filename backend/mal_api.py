@@ -61,7 +61,7 @@ class MAL_API(API):
                 )
                 total_list.extend(unfiltered_list)
 
-            print(len(total_list))
+            print(f"Got {len(total_list)} ratings...")
 
             if "next" in animes["paging"]:
                 i += 1
@@ -71,8 +71,8 @@ class MAL_API(API):
         return np.array(total_list)
 
     @classmethod
-    def get_anime_display_details(cls, id):
-        url = f"https://api.myanimelist.net/v2/anime/{id}"
+    def get_anime_display_details(cls, id_):
+        url = f"https://api.myanimelist.net/v2/anime/{id_}"
 
         data = {"fields": "title,mean"}
 
@@ -86,8 +86,8 @@ class MAL_API(API):
         return title, rating, image_url
 
     @classmethod
-    def get_anime_details(cls, id):
-        url = f"https://api.myanimelist.net/v2/anime/{id}"
+    def get_anime_details(cls, id_):
+        url = f"https://api.myanimelist.net/v2/anime/{id_}"
 
         data = {"fields": "title,mean,recommendations"}
 

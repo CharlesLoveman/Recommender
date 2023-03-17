@@ -14,25 +14,30 @@ def hello_world():
     members = request.args.getlist("members[]")
     users_info = []
     for user in members:
+        print(f"Getting ratings for user {user}...")
         user_info = MAL_API.extract_user_entries(user)
         if user_info is None:
-            return {"error": "User profile is private."}
+            return {"Error": "User profile is private."}
         if not len(user_info):
-            return {"error": "User has no ratings."}
+            return {"Error": "User has no ratings."}
         users_info.append(user_info)
 
     if len(users_info):
         results = []
+        print("Generating recommendations...")
         recommendations = recommend(users_info)
-        for id in recommendations:
-            title, rating, image_url = MAL_API.get_anime_display_details(id)
-            id = str(id)
+        for id_ in recommendations:
+            title, rating, image_url = MAL_API.get_anime_display_details(id_)
+            id_ = str(id_)
             results.append({
-                "id": id,
+                "id": id_,
                 "title": title,
                 "rating": rating,
                 "image_url": image_url,
             })
+
+        print("Done!")
+
         return results
 
-    return {"error": "User not found."}
+    return {"Error": "User not found."}
