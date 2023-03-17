@@ -107,7 +107,7 @@ class InvMap:
     def slicer(self, id_):
         """Return indices of id_ in self.keys."""
         return np.intersect1d(
-            id_.astype(int), self.keys, assume_unique=True, return_indices=True
+            id_.astype(int), self.keys, return_indices=True
         )[0:2]
 
     def __call__(self, id_):
