@@ -6,7 +6,7 @@ function Username(text, removeMember) {
     return (
         <Card sx={{ minWidth: 275, padding: "0.1rem", marginLeft: "20rem", marginRight: "20rem" }} key={text}>
             <CardContent>
-                <Box sx={{ display: 'flex', flexDirection: "column" }}><Typography sx={{ fontSize: 35, padding: "0.5rem", cursor: "grab" }} color="text.secondary" gutterBottom>
+                <Box sx={{ display: 'flex', flexDirection: "column" }}><Typography sx={{ fontSize: 35, padding: "0.5rem" }} color="text.secondary" gutterBottom>
                     {text}
 
                 </Typography></Box>

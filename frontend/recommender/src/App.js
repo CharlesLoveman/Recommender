@@ -23,6 +23,12 @@ function App() {
     }
     if (members.length > 0) {
       axios.get("http://127.0.0.1:5000/", { params }, header).then(function (response) {
+        console.log(response)
+        if (response.data["Error"]) {
+          console.log("trol")
+          setMembers([])
+          return
+        }
         setData(response.data)
         console.log(response.data)
       })
