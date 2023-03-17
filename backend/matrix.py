@@ -54,6 +54,8 @@ class Map:
         else:
             self.dictionary = mapping
 
+        self.keys = np.fromiter(self.dictionary.keys(), np.int64)
+        
         def f(index):
             return self.dictionary[int(index)]
 
@@ -66,7 +68,7 @@ class Map:
     def __call__(self, index):
         if isinstance(index, np.ndarray):
             if len(index):
-                return self.mapping(index)
+                return self.mapping(np.intersect1d(index.astype(int), self.keys))
             else:
                 return np.array([], np.int64)
 
@@ -93,7 +95,7 @@ class InvMap:
         else:
             self.dictionary = mapping
 
-        self.keys = np.fromiter(self.dictionary.keys(), np.float64)
+        self.keys = np.fromiter(self.dictionary.keys(), np.int64)
 
         def f(id_):
             return self.dictionary[int(id_)]
@@ -113,7 +115,7 @@ class InvMap:
     def __call__(self, id_):
         if isinstance(id_, np.ndarray):
             if len(id_):
-                return self.mapping(id_)
+                return self.mapping(np.intersect1d(id_.astype(int), self.keys))
             else:
                 return np.array([], np.int64)
 
