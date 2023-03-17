@@ -108,12 +108,12 @@ class InvMap:
         """Return indices of id_ in self.keys."""
         return np.intersect1d(
             id_.astype(int), self.keys, assume_unique=True, return_indices=True
-        )[1]
+        )[0:2]
 
     def __call__(self, id_):
         if isinstance(id_, np.ndarray):
             if len(id_):
-                return self.mapping(np.intersect1d(id_.astype(int), self.keys))
+                return self.mapping(id_)
             else:
                 return np.array([], np.int64)
 
