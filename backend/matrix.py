@@ -55,7 +55,7 @@ class Map:
             self.dictionary = mapping
 
         def f(index):
-            return self.dictionary[index]
+            return self.dictionary[int(index)]
 
         self.mapping = np.vectorize(f)
 
@@ -96,7 +96,7 @@ class InvMap:
         self.keys = np.fromiter(self.dictionary.keys(), np.float64)
 
         def f(id_):
-            return self.dictionary[id_]
+            return self.dictionary[int(id_)]
 
         self.mapping = np.vectorize(f)
 
@@ -107,7 +107,7 @@ class InvMap:
     def slicer(self, id_):
         """Return indices of id_ in self.keys."""
         return np.intersect1d(
-            id_, self.keys, assume_unique=True, return_indices=True
+            id_.astype(int), self.keys, assume_unique=True, return_indices=True
         )[1]
 
     def __call__(self, id_):

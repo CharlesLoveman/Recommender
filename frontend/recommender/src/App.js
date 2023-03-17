@@ -43,7 +43,7 @@ function App() {
     <div className="App">
       {(data) ?
         <div>
-          {data.map(x => Show(x['title'], x['rating'], x["https://myanimelist.net/anime/" + x['id'] + "/" + x['title']], x['image_url']))}
+          {data.map(x => Show(x['title'], x['rating'], "https://myanimelist.net/anime/" + x['id'], x['image_url']))}
         </div>
         :
         <div>

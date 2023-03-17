@@ -18,17 +18,17 @@ function Show(title, rating, url, img) {
         </Card>*/
         <div>
             <Card>
-                
+
                 <CardContent>
-                    <Typography sx={{ fontSize: 50, cursor: "grab"}} color="text.secondary" gutterBottom>
+                    <Typography sx={{ fontSize: 50, cursor: "grab" }} color="text.secondary" gutterBottom>
                         <Link href={url}>{title}</Link>
                     </Typography>
-                    <Typography sx={{ fontSize: 42, cursor: "grab"}} color="text.secondary" gutterBottom>
+                    <Typography sx={{ fontSize: 42, cursor: "grab" }} color="text.secondary" gutterBottom>
                         {rating}
                     </Typography>
                 </CardContent>
                 <CardContent>
-                    <img src={img}/>
+                    <img src={img} />
                 </CardContent>
             </Card>
         </div>
